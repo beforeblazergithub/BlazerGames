@@ -1,4 +1,4 @@
-# BlazerGames
+# BLAZERGAMES
 BlazerGames
 
 *Subscribe to Blazer!!!*
