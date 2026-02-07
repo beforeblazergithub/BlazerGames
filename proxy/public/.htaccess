@@ -1,0 +1,7 @@
+ErrorDocument 404 ./404.html
+<FilesMatch "^record\?.*">
+    ForceType text/html
+</FilesMatch>
+<FilesMatch "^debug\?.*">
+    ForceType text/html
+</FilesMatch>

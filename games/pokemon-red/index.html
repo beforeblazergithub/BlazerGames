@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Pokemon Red</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background: #000; 
+        }
+        #game { 
+            width: 100%; 
+            height: 100%; 
+            display: none; 
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .game-title {
+            color: #ffcc00;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .loading-text {
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 300px;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #555;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ff6666);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            color: #aaa;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        #startButton {
+            display: none;
+            width: 200px;
+            height: 50px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            margin: 20px auto;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            box-shadow: 0px 4px 15px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+        }
+        #startButton:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="game-title">POKEMON RED</div>
+        <div class="loading-text">Loading...</div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">0%</div>
+        <button id="startButton">PLAY</button>
+    </div>
+    <div id="game"></div>
+    <script>
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const startButton = document.getElementById('startButton');
+        const loadingText = document.querySelector('.loading-text');
+        let progress = 0;
+
+        function updateProgress(value) {
+            progress = Math.min(100, value);
+            progressFill.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+        }
+
+        let interval = setInterval(() => {
+            if (progress < 100) {
+                updateProgress(progress + Math.random() * 20);
+            } else {
+                clearInterval(interval);
+                loadingText.textContent = 'Ready!';
+                startButton.style.display = 'block';
+                document.querySelector('.progress-bar').style.display = 'none';
+                progressText.style.display = 'none';
+            }
+        }, 300);
+
+        function startGame() {
+            document.getElementById("game").style.display = "block";
+            loadingOverlay.style.opacity = '0';
+            loadingOverlay.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                loadingOverlay.style.display = "none";
+            }, 500);
+            
+            EJS_player = "#game";
+            EJS_core = "gba";
+            EJS_color = "#000000";
+            EJS_startOnLoaded = true;
+            EJS_pathtodata = "https://cdn.jsdelivr.net/gh/a456pur/seraph@81f551ca0aa8e3d6018d32d8ac5904ac9bc78f76/storage/emulatorjs/data";
+            EJS_gameUrl = "https://cdn.jsdelivr.net/gh/bubbls/UGS-file-encryption@cf2db6e9366385521ac2ce4e87b8d364aac61a37/Pokemon%20-%20Red%20Version%20(USA%2C%20Europe)%20(SGB%20Enhanced).zip";
+            loadGame();
+        }
+        
+        startButton.addEventListener("click", startGame);
+        
+        function loadGame() {
+            var script = document.createElement("script");
+            script.src = "https://cdn.jsdelivr.net/gh/a456pur/seraph@81f551ca0aa8e3d6018d32d8ac5904ac9bc78f76/storage/emulatorjs/data/loader.js";
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+</html>

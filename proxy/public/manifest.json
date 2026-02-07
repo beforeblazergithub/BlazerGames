@@ -1,0 +1,21 @@
+{ 
+
+  "name": "frogie's arcade", 
+
+  "short_name": "frogie's arcade", 
+
+  "start_url": "/", 
+
+  "display": "standalone", 
+
+  "icons": [{ 
+
+    "src": "images/app-logo.png", 
+
+    "sizes": "512x512", 
+
+    "type": "image/png" 
+
+  }] 
+
+}

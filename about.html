@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Shindo's Hub</title>
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
+    <style>
+        .about-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 40px 60px;
+        }
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .about-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .about-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        .section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section h2 i {
+            color: var(--accent);
+        }
+        .section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .credits-list {
+            list-style: none;
+        }
+        .credits-list li {
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .credits-list li:last-child {
+            border-bottom: none;
+        }
+        .credit-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .credit-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .credit-info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 0;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            color: var(--accent-hover);
+        }
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 100px 20px 40px;
+            }
+            .about-header h1 {
+                font-size: 32px;
+            }
+            .section {
+                padding: 25px;
+            }
+            .section h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="/"><img src="images/logo.webp" alt="logo"></a>
+            <h1>SHINDO'S HUB</h1>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        </div>
+    </nav>
+
+    <div class="about-container">
+        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Games</a>
+        
+        <div class="about-header">
+            <h1>About Shindo's Hub</h1>
+            <p>Your destination for free browser games</p>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-user"></i> About Shindo957</h2>
+            <p>
+                Shindo957 is a passionate gamer and web developer who created this hub to bring free, accessible gaming to everyone. With a love for classic platformers, action games, and retro titles, Shindo957 curates a diverse collection of browser-based games that can be enjoyed anywhere, anytime.
+            </p>
+            <p style="margin-top: 15px;">
+                The vision behind Shindo's Hub is simple: provide a clean, ad-free space where players can discover and enjoy quality games without barriers. From challenging VEX platformers to nostalgic Pokemon adventures, this hub represents a dedication to the gaming community.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-heart"></i> Credits</h2>
+            <ul class="credits-list">
+                <li>
+                    <div class="credit-icon"><i class="fas fa-code"></i></div>
+                    <div class="credit-info">
+                        <h3>Shindo957</h3>
+                        <p>Website Creator & Curator</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="credit-icon"><i class="fas fa-server"></i></div>
+                    <div class="credit-info">
+                        <h3>Replit</h3>
+                        <p>Website Hosting</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="credit-icon"><i class="fas fa-gamepad"></i></div>
+                    <div class="credit-info">
+                        <h3>UGS</h3>
+                        <p>Game HTML Files</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-info-circle"></i> About This Site</h2>
+            <p>
+                Shindo's Hub features 20+ browser-based games including platformers, racing games, puzzle games, and more. All games are free to play and work directly in your browser - no downloads required. The site tracks your recently played games and shows the most popular titles based on actual play counts.
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Shindo's Hub - Play Free Browser Games</p>
+    </footer>
+</body>
+</html>

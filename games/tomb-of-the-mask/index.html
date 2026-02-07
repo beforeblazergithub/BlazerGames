@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tomb of the Mask</title>
+    <base href="https://cdn.jsdelivr.net/gh/rcmcom/tombofthemask@main/">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .webgl-content {
+            width: 100%;
+            height: 100%;
+        }
+        #gameContainer {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <script src="UnityProgress.js"></script>
+    <script src="d5fuh3d/UnityLoader.js"></script>
+    <script>
+        var gameInstance = UnityLoader.instantiate("gameContainer", "d5fuh3d/totm.json", {
+            onProgress: UnityProgress,
+            Module: {
+                onRuntimeInitialized: function() {
+                    UnityProgress(gameInstance, "complete");
+                }
+            }
+        });
+    </script>
+    <div class="webgl-content">
+        <div id="gameContainer" style="width: 100%; height: 100%; margin: auto"></div>
+    </div>
+</body>
+</html>

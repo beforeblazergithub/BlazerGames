@@ -1,0 +1,18 @@
+{
+  "name": "shindos-hub",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Shindo's Hub - Game Portal",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@titaniumnetwork-dev/ultraviolet": "^3.2.10",
+    "@tomphttp/bare-server-node": "^2.0.6",
+    "express": "^5.2.1"
+  }
+}

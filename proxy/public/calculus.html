@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui, shrink-to-fit=yes">
+      <title>Study.com | Calculus</title>
+      <link href="/search.css" rel="stylesheet" type="text/css" />
+      <link href="/sys/alert.css" rel="stylesheet" type="text/css" />
+      <link rel="manifest" href="manifest.json"/>
+      <link rel="icon" href="/images/thosewhodrinkeggnog.png">
+      <meta property="og:title" content="frogie's arcade">
+      <meta name="theme-color" content="#00ffa6">
+      <meta name="msapplication-TileColor" content="#00ffa6">
+      <meta property="og:image" content="/images/thosewhodrinkeggnog.png">
+      <meta name="description" content="the games just for you">
+      <script src="/sys/login.js"></script>
+      <script src="/moresettings.js"></script>
+      <script src="/sys/index.js"></script>
+      <script src="/sys/frame.js"></script>
+      <meta property="og:description" content="the games just for you">
+
+</head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-43Q4DLBWP2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-43Q4DLBWP2');
+    </script>
+<body>
+    <script src="/sys/alert.js"></script>
+    <div class="message-box" id="messageBox"></div>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css'></script>
+    <script src='/jquery-1.11.1.min.js'></script>
+    <header>
+        <img class="logo" src="/images/logo.gif" onclick="window.location.href='/';">
+        <form id="uv-form">
+            <input id="uv-search-engine" value="https://www.google.com/search?hl=en-us&q=%s" type="hidden"/> 
+            <input id="uv-address-searchbar" type="text" placeholder="search anything..." class="form__input"/>
+          </form>
+  <div class="navbar-right">
+          <div id="the-button-container">
+            <button id="stupidpxycontrols" onclick="goback()"><img id="roddypoor" src="/images/back.svg" width="55px" height="55px" ></img></button>
+            <button id="stupidpxycontrols" onclick="rotatetozone()"><img id="roddypoor" src="/images/forward.svg" width="55px" height="55px" ></img></button>
+            <button id="stupidpxycontrols" onclick="fn_reload()"><img id="roddypoor" src="/images/reload.svg" width="55px" height="55px" ></img></button>
+          </div>
+        </div>
+    </header>
+    <iframe src="" id="iframeid" style="bottom: 0" marginheight="0px" marginwidth="0px"  allowfullscreen></iframe>
+    <style>
+        #uv-form{
+            padding: 3px;
+            height: 0
+        }
+    </style>
+    <script src="/frog/bundle.js" defer></script>
+    <script src="/frog/config.js?cdn" defer></script>
+    <script>
+          function fn_reload(){
+              var iframe = document.getElementById('iframeid');
+              iframe.src = iframe.contentWindow.location.href;
+          }
+          function goFullscreen(id) {
+        var element = document.getElementById(id);
+        if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        }
+    }
+    function goback(){
+      iframe.contentWindow.history.back()
+    }
+    function rotatetozone(){
+      iframe.contentWindow.history.forward()
+    }
+      // Select the iframe element
+const iframe = document.querySelector('iframe');
+let lastURL = '';
+
+function checkIframeURL() {
+    try {
+        // Access the current URL of the iframe
+        const currentURL = iframe.contentWindow.location.href;
+
+        // Log if the URL has changed
+        if (currentURL !== lastURL) {
+            console.log(`Iframe URL changed to: ${currentURL}`);
+            lastURL = currentURL;
+const websitePath = currentURL
+        .replace(window.location.origin, "")
+        .replace("/frog/ixl/", "");
+      localStorage.setItem("decoded", websitePath);
+      const decodedValue = __uv$config.decodeUrl(websitePath);
+      document.getElementById("uv-address-searchbar").value = decodedValue;
+        }
+    } catch (error) {
+        console.error('Cannot access iframe URL due to cross-origin policy');
+    }
+}
+
+// Periodically check the iframe URL every second
+setInterval(checkIframeURL, 1000);
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyAydynhitaENUPOr8S-glDFflJMZCZbZYY",
+          authDomain: "nfgrhtaer4wt4yh4r.firebaseapp.com",
+          projectId: "nfgrhtaer4wt4yh4r",
+          storageBucket: "nfgrhtaer4wt4yh4r.appspot.com",
+          messagingSenderId: "741433768105",
+          appId: "1:741433768105:web:fad81fc01ccb2fddc951b8"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const database = firebase.database();
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+      // Set up the Google provider
+
+      // Function to handle Google Sign-In
+      function googleSignIn() {
+        auth.signInWithPopup(provider)
+          .then((result) => {
+            // User signed in successfully.
+            const user = result.user;
+            console.log('User:', user);
+            displayUserProfile(user);
+          }).catch((error) => {
+            // Handle Errors here.
+            console.error('Error during sign-in:', error);
+          });
+      }
+
+      // Function to display user profile
+      function displayUserProfile(user) {
+        if (user) {
+          const profilePicUrl = user.photoURL;
+          document.getElementById('profile-pic').src = profilePicUrl;
+          document.getElementById('user-name').textContent = user.displayName;
+        }
+      }
+
+      // Function to handle sign-out
+      function signOut() {
+        auth.signOut().then(() => {
+          // Sign-out successful.
+          document.getElementById('big-profile-pic').src = '';
+          document.getElementById('profile-pic').src = '';
+          document.getElementById('user-name').textContent = '';
+          console.log('User signed out.');
+        }).catch((error) => {
+          // An error happened.
+          console.error('Error during sign-out:', error);
+        });
+      }
+
+      // Function to display user profile
+      function displayUserProfile(user) {
+        if (user) {
+          const profilePicUrl = user.photoURL;
+          document.getElementById('profile-pic').src = profilePicUrl;
+          document.getElementById('big-profile-pic').src = profilePicUrl;
+          document.getElementById('user-name').textContent = user.displayName;
+        }
+      }
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in.
+          displayUserProfile(user);
+          
+        } else {
+          // User is signed out.
+          document.getElementById('profile-pic').src = '/images/user.png';
+          document.getElementById('big-profile-pic').src = '/images/user.png';
+          document.getElementById('user-name').textContent = '';
+        }
+      });
+    </script>
+
+</body>
+
+</html>

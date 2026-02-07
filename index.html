@@ -3,88 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blazer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shindo's Hub</title>
+    
+    <meta property="og:title" content="Shindo's Hub">
+    <meta property="og:description" content="Play the best browser games - VEX, Drive Mad, Moto X3M, Retro Bowl and more!">
+    <meta property="og:image" content="https://shindohub.org/images/logo.webp">
+    <meta property="og:url" content="https://shindohub.org">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0a0a1a">
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
 </head>
 <body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="images/logo.webp" alt="Shindo's Hub" class="loading-logo">
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+            <p class="loading-text">Loading...</p>
+            <p class="loading-credit">Made by <span>Shindo Productions</span></p>
+        </div>
+    </div>
     <nav>
-        <img src="images/logo.png" alt="logo">
-        <h1>BLAZER</h1>
+        <div class="nav-left">
+            <img src="images/logo.webp" alt="logo">
+            <h1>SHINDO'S HUB</h1>
+        </div>
+        <div class="nav-links">
+            <a href="#top-played" class="nav-link"><i class="fas fa-fire"></i> Top Played</a>
+            <a href="/proxy" class="nav-link"><i class="fas fa-globe"></i> Proxy</a>
+            <a href="/about.html" class="nav-link secondary"><i class="fas fa-info-circle"></i> About</a>
+            <button class="nav-link settings-btn" onclick="openSettings()"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
 
-    <div class="featured">
-        <h1>Popular:</h1>
-        <div class="column">
-          <a href="games/bob-the-robber-2/">
-            <img src="images/bob-the-robber-2.png">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#recently-played-section" onclick="closeMobileMenu()"><i class="fas fa-clock"></i> Recently Played</a>
+        <a href="#top-played" onclick="closeMobileMenu()"><i class="fas fa-fire"></i> Top Played</a>
+        <a href="#games" onclick="closeMobileMenu()"><i class="fas fa-gamepad"></i> All Games</a>
+        <a href="/proxy" onclick="closeMobileMenu()"><i class="fas fa-globe"></i> Proxy</a>
+        <a href="/about.html" onclick="closeMobileMenu()"><i class="fas fa-info-circle"></i> About</a>
+        <a href="#" onclick="closeMobileMenu(); openSettings();"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2><i class="fas fa-cog"></i> Settings</h2>
+                <button class="settings-close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
             </div>
-          </a>
-          <a href="games/vex7/">
-            <img src="images/vex7.jpeg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
+            <div class="settings-body">
+                <div class="settings-group">
+                    <h3><i class="fas fa-user"></i> Account</h3>
+                    <div id="accountLoggedOut">
+                        <div class="account-tabs">
+                            <button class="account-tab active" onclick="showAccountTab('login')">Login</button>
+                            <button class="account-tab" onclick="showAccountTab('register')">Register</button>
+                        </div>
+                        <form id="loginForm" class="account-form" onsubmit="event.preventDefault(); loginAccount();">
+                            <input type="text" id="loginUsername" placeholder="Username" class="account-input" autocomplete="username">
+                            <input type="password" id="loginPassword" placeholder="Password" class="account-input" autocomplete="current-password">
+                            <button type="submit" class="settings-action-btn">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </form>
+                        <form id="registerForm" class="account-form" style="display:none;" onsubmit="event.preventDefault(); registerAccount();">
+                            <input type="text" id="registerUsername" placeholder="Username" class="account-input" autocomplete="username">
+                            <input type="password" id="registerPassword" placeholder="Password" class="account-input" autocomplete="new-password">
+                            <input type="password" id="registerConfirm" placeholder="Confirm Password" class="account-input" autocomplete="new-password">
+                            <button type="submit" class="settings-action-btn">
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </button>
+                        </form>
+                        <div id="accountError" class="account-error"></div>
+                    </div>
+                    <div id="accountLoggedIn" style="display:none;">
+                        <div class="account-info">
+                            <div class="account-avatar" id="userAvatar" onclick="openAvatarPicker()">
+                                <img src="" alt="" id="avatarImage" style="display:none;">
+                                <i class="fas fa-user-circle" id="avatarIcon"></i>
+                                <span class="avatar-edit"><i class="fas fa-pencil"></i></span>
+                            </div>
+                            <div class="account-details">
+                                <span class="account-username" id="displayUsername"></span>
+                                <span class="account-badge" id="accountBadge"></span>
+                            </div>
+                        </div>
+                        <div id="adminPanel" style="display:none;">
+                            <div class="admin-section">
+                                <h4><i class="fas fa-crown"></i> Admin Controls</h4>
+                                <button class="admin-btn" onclick="adminResetPlayCounts()">
+                                    <i class="fas fa-redo"></i> Reset All Play Counts
+                                </button>
+                                <button class="admin-btn" onclick="adminViewUsers()">
+                                    <i class="fas fa-users"></i> View All Users
+                                </button>
+                                <button class="admin-btn danger" onclick="adminClearAllAccounts()">
+                                    <i class="fas fa-trash"></i> Delete All User Accounts
+                                </button>
+                            </div>
+                            <div id="adminUserList" class="admin-user-list" style="display:none;"></div>
+                        </div>
+                        <div class="experimental-account-btns" id="experimentalAccountBtns" style="display:none;">
+                            <button class="settings-action-btn" onclick="openProfileModal()">
+                                <i class="fas fa-user"></i> My Profile
+                            </button>
+                            <button class="settings-action-btn" onclick="openBadgesModal()">
+                                <i class="fas fa-trophy"></i> My Badges
+                            </button>
+                        </div>
+                        <button class="settings-action-btn logout-btn" onclick="logoutAccount()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-shield-alt"></i> Tab Cloaking</h3>
+                    <button class="settings-action-btn" onclick="openAboutBlank()">
+                        <i class="fas fa-external-link-alt"></i> Open in about:blank
+                    </button>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-palette"></i> UI Version</h3>
+                    <div class="ui-version-selector">
+                        <button class="ui-version-btn" data-version="old" onclick="setUIVersion('old')">Old</button>
+                        <button class="ui-version-btn" data-version="0.2" onclick="setUIVersion('0.2')">0.2</button>
+                        <button class="ui-version-btn" data-version="0.5" onclick="setUIVersion('0.5')">0.5</button>
+                        <button class="ui-version-btn active" data-version="0.75" onclick="setUIVersion('0.75')">0.75 (New)</button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-music"></i> Menu Music</h3>
+                    <div class="setting-row">
+                        <span class="music-name">ROMANCEPLANET w STAKILLAZ - FALL FROM THE SKY PT.2</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="musicToggle" onchange="toggleMusic()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-row volume-row">
+                        <span><i class="fas fa-volume-down"></i></span>
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="65" oninput="setVolume(this.value)">
+                        <span id="volumeValue">65%</span>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-tachometer-alt"></i> Performance</h3>
+                    <div class="setting-row">
+                        <span>Show FPS Counter</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="fpsToggle" onchange="toggleFPS()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-row">
+                        <span>Use WebGL Rendering</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="webglToggle" checked onchange="toggleWebGL()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-mobile-alt"></i> Display</h3>
+                    <div class="setting-row">
+                        <span>Use Mobile UI on PC</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="mobileUIToggle" onchange="toggleMobileUI()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-flask"></i> Release Channel</h3>
+                    <div class="channel-selector">
+                        <button class="channel-btn" id="stableChannelBtn" onclick="setReleaseChannel('stable')">
+                            <i class="fas fa-shield-alt"></i> Stable
+                        </button>
+                        <button class="channel-btn" id="experimentalChannelBtn" onclick="setReleaseChannel('experimental')">
+                            <i class="fas fa-flask"></i> Experimental
+                        </button>
+                    </div>
+                    <p class="channel-warning" id="channelWarning" style="display:none;">
+                        <i class="fas fa-exclamation-triangle"></i> Experimental features may have bugs
+                    </p>
+                </div>
+
+                <div class="settings-group experimental-only" id="experimentalSettings" style="display:none;">
+                    <h3><i class="fas fa-star"></i> Experimental Features</h3>
+                    <div class="exp-feature-list">
+                        <div class="exp-feature"><i class="fas fa-dice"></i> Random Game Button</div>
+                        <div class="exp-feature"><i class="fas fa-filter"></i> Category Filter</div>
+                        <div class="exp-feature"><i class="fas fa-clock"></i> Game Timer</div>
+                        <div class="exp-feature"><i class="fas fa-trophy"></i> Badges & Achievements</div>
+                        <div class="exp-feature"><i class="fas fa-user"></i> Player Profiles</div>
+                        <div class="exp-feature"><i class="fas fa-comment"></i> Game Comments</div>
+                        <div class="exp-feature"><i class="fas fa-desktop"></i> macOS UI Theme</div>
+                    </div>
+                </div>
+
+                <div class="settings-group experimental-only" id="feedbackSection" style="display:none;">
+                    <h3><i class="fas fa-envelope"></i> Send Feedback</h3>
+                    <textarea id="feedbackText" class="feedback-textarea" placeholder="Share your thoughts, report bugs, or suggest features..."></textarea>
+                    <button class="settings-action-btn" onclick="sendFeedback()">
+                        <i class="fas fa-paper-plane"></i> Send Feedback
+                    </button>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-info-circle"></i> Version Info</h3>
+                    <div class="version-info-box">
+                        <div class="version-row">
+                            <span class="version-label">Version:</span>
+                            <span class="version-value" id="appVersion">1.00</span>
+                        </div>
+                        <div class="version-row">
+                            <span class="version-label">Channel:</span>
+                            <span class="version-badge stable" id="appChannel">Stable</span>
+                        </div>
+                        <div class="version-row">
+                            <span class="version-label">Production:</span>
+                            <span class="version-value">Shindo Productions</span>
+                        </div>
+                    </div>
+                    <button class="settings-action-btn" onclick="showUpdateLog()">
+                        <i class="fas fa-clipboard-list"></i> View Update Log
+                    </button>
+                </div>
             </div>
-          </a>
         </div>
-        <div class="row">
-          <a href="games/vex6">
-            <img src="images/vex6.jpeg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
+    </div>
+
+    <div class="fps-counter" id="fpsCounter" style="display: none;">
+        <span id="fpsValue">0</span> FPS
+    </div>
+
+    <audio id="menuMusic" loop>
+        <source src="/audio/menu-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="update-log-modal" id="updateLogModal">
+        <div class="update-log-content">
+            <div class="update-log-header">
+                <h2><i class="fas fa-clipboard-list"></i> Update Log - v1.00</h2>
+                <button class="update-log-close" onclick="closeUpdateLog()"><i class="fas fa-times"></i></button>
             </div>
-          </a>
-        </div>
-        <div class="row">
-          <a href="games/drive-mad/">
-            <img src="images/drive-mad.jpg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
+            <div class="update-log-body">
+                <div class="update-section">
+                    <h3><i class="fas fa-star"></i> What's New in v1.00 Stable</h3>
+                    <ul class="update-list">
+                        <li><i class="fas fa-check"></i> Loading screen with animated progress bar</li>
+                        <li><i class="fas fa-check"></i> Games now open in fullscreen modal</li>
+                        <li><i class="fas fa-check"></i> 5-star game rating system</li>
+                        <li><i class="fas fa-check"></i> User profile with custom avatars</li>
+                        <li><i class="fas fa-check"></i> Multiple UI themes (Old, 0.2, 0.5, 0.75)</li>
+                        <li><i class="fas fa-check"></i> Admin controls for managing users</li>
+                        <li><i class="fas fa-check"></i> Optimized file sizes with CDN hosting</li>
+                    </ul>
+                </div>
+                <div class="update-section">
+                    <h3><i class="fas fa-gamepad"></i> Available Games (24+)</h3>
+                    <div class="game-list-grid" id="updateGameList"></div>
+                </div>
+                <div class="update-section">
+                    <h3><i class="fas fa-road"></i> Coming Soon</h3>
+                    <ul class="update-list coming-soon">
+                        <li><i class="fas fa-flask"></i> Unstable/Experimental channel with new features</li>
+                        <li><i class="fas fa-plus"></i> More games to be added</li>
+                        <li><i class="fas fa-star"></i> Community features</li>
+                    </ul>
+                </div>
             </div>
-            </a>
-        </div>
-        <div class="column">
-          <a href="games/moto-x3m/">
-            <img src="images/moto-x3m.jpg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
+            <div class="update-log-footer">
+                <label class="dont-show-again">
+                    <input type="checkbox" id="dontShowAgain" onchange="toggleDontShowAgain()">
+                    <span>Don't show this again for this version</span>
+                </label>
+                <button class="update-log-btn" onclick="closeUpdateLog()">Got it!</button>
             </div>
-          </a>
-          <a href="games/retro-bowl/">
-            <img src="images/retro-bowl.jpg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
+        </div>
+    </div>
+
+    <div class="avatar-modal" id="avatarModal">
+        <div class="avatar-modal-content">
+            <div class="avatar-modal-header">
+                <h3><i class="fas fa-image"></i> Choose Avatar</h3>
+                <button class="settings-close" onclick="closeAvatarPicker()"><i class="fas fa-times"></i></button>
             </div>
-          </a>
+            <div class="avatar-grid" id="avatarGrid"></div>
         </div>
+    </div>
+
+    <div class="game-modal" id="gameModal">
+        <div class="game-modal-header">
+            <span class="game-modal-title" id="gameModalTitle">Game</span>
+            <div class="game-modal-controls">
+                <button class="game-control-btn" onclick="toggleFullscreen()" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="game-control-btn" onclick="closeGameModal()" title="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
+        <iframe id="gameFrame" src="" allow="fullscreen; autoplay; gamepad"></iframe>
+        <div class="game-modal-footer">
+            <div class="game-timer-section experimental-feature" id="gameTimerSection" style="display:none;">
+                <i class="fas fa-clock"></i>
+                <span>Playtime: </span>
+                <span id="gameTimerDisplay">0s</span>
+            </div>
+            <div class="game-rating">
+                <span>Rate this game:</span>
+                <div class="star-rating" id="starRating">
+                    <i class="fas fa-star" data-rating="1"></i>
+                    <i class="fas fa-star" data-rating="2"></i>
+                    <i class="fas fa-star" data-rating="3"></i>
+                    <i class="fas fa-star" data-rating="4"></i>
+                    <i class="fas fa-star" data-rating="5"></i>
+                </div>
+                <span class="avg-rating" id="avgRating"></span>
+            </div>
+        </div>
+        <div class="game-comments-section experimental-feature" id="gameCommentsSection" style="display:none;">
+            <h4><i class="fas fa-comments"></i> Comments</h4>
+            <div id="gameComments" class="comments-list"></div>
+            <div class="comment-form">
+                <input type="text" id="commentInput" placeholder="Add a comment..." maxlength="200">
+                <button onclick="submitComment()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="recently-played-section" id="recently-played-section" style="display: none;">
+        <h2><i class="fas fa-clock"></i> Recently Played</h2>
+        <div class="recently-played-games" id="recently-played-games"></div>
+    </div>
+
+    <div class="top-played-section" id="top-played">
+        <div class="section-header">
+            <h1><i class="fas fa-fire"></i> Top Played</h1>
+            <p class="section-subtitle">Most popular games on the hub</p>
+        </div>
+        <div class="top-played-grid" id="top-played-grid"></div>
     </div>
 
     <div class="content">
+        <div class="section-divider"></div>
 
-    <hr>
+        <div class="search-container">
+            <div class="search">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search games...">
+            </div>
+            <div class="experimental-controls" id="experimentalControls" style="display:none;">
+                <button class="random-game-btn" onclick="openRandomGame()">
+                    <i class="fas fa-dice"></i> I'm Feeling Lucky
+                </button>
+                <select id="categoryFilter" class="category-filter" onchange="setCategoryFilter(this.value)">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+        </div>
 
-    <div class="search">
-        <input type="text" placeholder="Search..." oninput="">
-        <button><i class="fas fa-search"></i></button>
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-ghost"></i>
+            <p>No games found</p>
+        </div>
+
+        <h2 class="all-games-title" id="games"><i class="fas fa-gamepad"></i> All Games</h2>
+        <div id="games-grid"></div>
     </div>
 
-    <div id="games">
-        <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" alt="bob the robber 2"></a>
-        <a href="games/vex7/"><img src="images/vex7.jpeg" alt="vex 7"></a>
-        <a href="games/vex6/"><img src="images/vex6.jpeg" alt="vex 6"></a>
-        <a href="games/"><img src="images/mc.png" alt="minecraft"></a>
-        <a href="games/moto-x3m/"><img src="images/moto-x3m.jpg" alt="moto x3m"></a>
-        <a href="games/retro-bowl/"><img src="images/retro-bowl.jpg" alt="retrobowl"></a>
-        <a href="games/drive-mad/"><img src="images/drive-mad.jpg" alt="drive mad"></a>
-        <a href="games/slope/"><img src="images/slope.jpg" alt="slope"></a>
-        <a href="games/motox3m2/"><img src="images/motox3m2.jpg" alt="moto x3m2"></a>
+    <footer>
+        <p>Shindo's Hub - Play Free Browser Games | <a href="/about.html" style="color: var(--accent); text-decoration: none;">About & Credits</a></p>
+    </footer>
+
+    <div class="badges-modal" id="badgesModal">
+        <div class="badges-content">
+            <div class="badges-header">
+                <h2><i class="fas fa-trophy"></i> My Badges</h2>
+                <button class="badges-close" onclick="closeBadgesModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="badges-body">
+                <div class="badges-grid" id="badgesGrid"></div>
+                <div class="badges-progress" id="badgesProgress"></div>
+            </div>
+        </div>
     </div>
+
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <div class="profile-header">
+                <h2><i class="fas fa-user"></i> Player Profile</h2>
+                <button class="profile-close" onclick="closeProfileModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="profile-body">
+                <div class="profile-avatar-large" id="profileAvatar"></div>
+                <h3 id="profileUsername"></h3>
+                <div class="profile-stats" id="profileStats"></div>
+                <div class="profile-badges" id="profileBadges"></div>
+            </div>
+        </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
-<script src="script.js"></script>

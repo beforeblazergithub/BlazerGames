@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui, shrink-to-fit=yes">
+    <title>Study.com | 404 | Not Found</title>
+    <link href="/styles.css" rel="stylesheet" type="text/css" />
+    <link href="/sys/alert.css" rel="stylesheet" type="text/css" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="/images/thosewhodrinkeggnog.png">
+    <meta property="og:title" content="frogie's arcade">
+    <meta name="theme-color" content="#00ffa6">
+    <meta name="msapplication-TileColor" content="#00ffa6">
+    <meta property="og:image" content="/images/thosewhodrinkeggnog.png">
+    <meta name="description" content="this page doesn't exist, don't bother clicking!">
+    <script src="/sys/login.js"></script>
+    <script src="/moresettings.js"></script>
+    <meta property="og:description" content="this page doesn't exist, don't bother clicking!">
+    <meta http-equiv="Content-Security-Policy"
+        content="script-src 'self' 'unsafe-eval' https://www.gstatic.com/ https://apis.google.com/ https://www.authpro.com https://www.googletagmanager.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://cdn.jsdelivr.net https://widgetbot.io https://docs.widgetbot.io 'unsafe-inline';">
+    <style>
+        body {
+            text-align: center;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        .rainbowtitle {
+            display: inline-block;
+        }
+
+        h1 {
+            color: #fff;
+        }
+    </style>
+</head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-43Q4DLBWP2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-43Q4DLBWP2');
+    </script>
+<body>
+  <noscript>enable javascript you dumb monkey</noscript>
+    <script src="/sys/alert.js"></script>
+    <div class="message-box" id="messageBox"></div>
+    <header>
+        <img id="reallogo" src="/images/thosewhodrinkeggnog.png" width=55px height=55px onclick="window.location.href='/';">
+  <div class="navbar-right">
+          <div id="the-button-container">
+            <button id="headerbtn" onclick="window.location.href='/math/index.html';">Unblocked</button></a>
+            <button id="headerbtn" onclick="window.location.href='/reading/';">Apps</button>
+            <button id="headerbtn" onclick="window.location.href='/partners.html';">Partners</button>
+            <button id="stupidpfpbutton" onclick="window.location.href='/settings.html';"><img id="header-img-btn" src="/images/settings.png" width="55px" height="55px" ></img></button>
+            <button id="stupidpfpbutton" onclick="window.location.href='/profile/';"><img id="profile-pic" src="" width="55px" height="55px" ></img></button>
+          </div>
+        </div>
+    </header>
+    <div id="roddyrichhesbox">
+        <div id="main">
+            <br>
+            <br>
+            <br>
+            <h1>404, page not found.</h1>
+            <br>
+            <h2>were you trying to use the proxy but got here? press the button below to fix the error and get access to your content.</h2>
+            <button id="headerbtn" onclick="window.location.href = window.location.href">Refresh</button>
+        </div>
+    </div>
+    <div id="background"></div>
+    <div id="particles-js"></div>
+    <script src="/particles.js"></script>
+    <script src="/app.js"></script>
+    <script src="/settings.js"></script>
+   <script src="/panic.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyAydynhitaENUPOr8S-glDFflJMZCZbZYY",
+          authDomain: "nfgrhtaer4wt4yh4r.firebaseapp.com",
+          projectId: "nfgrhtaer4wt4yh4r",
+          storageBucket: "nfgrhtaer4wt4yh4r.appspot.com",
+          messagingSenderId: "741433768105",
+          appId: "1:741433768105:web:fad81fc01ccb2fddc951b8"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const database = firebase.database();
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+      // Set up the Google provider
+
+      // Function to handle Google Sign-In
+      function googleSignIn() {
+        auth.signInWithPopup(provider)
+          .then((result) => {
+            // User signed in successfully.
+            const user = result.user;
+            console.log('User:', user);
+            displayUserProfile(user);
+          }).catch((error) => {
+            // Handle Errors here.
+            console.error('Error during sign-in:', error);
+          });
+      }
+
+      // Function to display user profile
+      function displayUserProfile(user) {
+        if (user) {
+          const profilePicUrl = user.photoURL;
+          document.getElementById('profile-pic').src = profilePicUrl;
+          document.getElementById('user-name').textContent = user.displayName;
+        }
+      }
+
+      // Function to handle sign-out
+      function signOut() {
+        auth.signOut().then(() => {
+          // Sign-out successful.
+          document.getElementById('big-profile-pic').src = '';
+          document.getElementById('profile-pic').src = '';
+          document.getElementById('user-name').textContent = '';
+          console.log('User signed out.');
+        }).catch((error) => {
+          // An error happened.
+          console.error('Error during sign-out:', error);
+        });
+      }
+
+      // Function to display user profile
+      function displayUserProfile(user) {
+        if (user) {
+          const profilePicUrl = user.photoURL;
+          document.getElementById('profile-pic').src = profilePicUrl;
+          document.getElementById('big-profile-pic').src = profilePicUrl;
+          document.getElementById('user-name').textContent = user.displayName;
+        }
+      }
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in.
+          displayUserProfile(user);
+        } else {
+          // User is signed out.
+          document.getElementById('profile-pic').src = '/images/user.png';
+          document.getElementById('big-profile-pic').src = '/images/user.png';
+          document.getElementById('user-name').textContent = '';
+        }
+      });
+    </script>
+</body>
+
+</html>

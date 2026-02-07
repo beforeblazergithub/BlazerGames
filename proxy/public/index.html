@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy - Shindo's Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 30px;
+        }
+        .search-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus {
+            border-color: #8b5cf6;
+        }
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+        .go-btn {
+            margin-top: 15px;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .go-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            margin-top: 20px;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #8b5cf6;
+        }
+        .info {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo"><i class="fas fa-globe"></i> Shindo's Proxy</h1>
+        <p class="subtitle">Browse the web freely</p>
+        
+        <div class="search-box">
+            <form id="uv-form">
+                <input type="hidden" id="uv-search-engine" value="https://www.google.com/search?q=%s">
+                <input type="text" id="uv-address" class="search-input" placeholder="Enter URL or search..." autocomplete="off">
+                <button type="submit" class="go-btn"><i class="fas fa-arrow-right"></i> Go</button>
+            </form>
+        </div>
+        
+        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Games</a>
+        
+        <div class="info">
+            <i class="fas fa-info-circle"></i> Enter a URL (like google.com) or search term to browse through the proxy.
+        </div>
+    </div>
+
+    <script src="/frog/bundle.js"></script>
+    <script src="/frog/config.js"></script>
+    <script>
+        const form = document.getElementById('uv-form');
+        const address = document.getElementById('uv-address');
+        const searchEngine = document.getElementById('uv-search-engine');
+
+        async function registerSW() {
+            if (!('serviceWorker' in navigator)) {
+                throw new Error('Service workers not supported');
+            }
+            
+            try {
+                const reg = await navigator.serviceWorker.register('/frog/sw.js', {
+                    scope: __uv$config.prefix
+                });
+                
+                await new Promise((resolve, reject) => {
+                    const sw = reg.installing || reg.waiting || reg.active;
+                    if (reg.active) {
+                        resolve();
+                        return;
+                    }
+                    if (!sw) {
+                        reject(new Error('No service worker found'));
+                        return;
+                    }
+                    sw.addEventListener('statechange', (e) => {
+                        if (e.target.state === 'activated') resolve();
+                        if (e.target.state === 'redundant') reject(new Error('SW became redundant'));
+                    });
+                    setTimeout(() => resolve(), 2000);
+                });
+                
+                return reg;
+            } catch (err) {
+                throw new Error('SW registration failed: ' + err.message);
+            }
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            let url = address.value.trim();
+            if (!url) return;
+            
+            if (!url.includes('.') && !url.startsWith('http')) {
+                url = searchEngine.value.replace('%s', encodeURIComponent(url));
+            } else if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            
+            try {
+                await registerSW();
+                const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+                window.location.href = encodedUrl;
+            } catch (err) {
+                console.error('Proxy error:', err.message || err);
+                alert('Proxy error: ' + (err.message || 'Unknown error. Please try again.'));
+            }
+        });
+
+        registerSW().catch(() => {});
+    </script>
+</body>
+</html>
