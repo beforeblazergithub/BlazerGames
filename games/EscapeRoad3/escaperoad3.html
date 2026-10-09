@@ -1,0 +1,285 @@
+<!doctype html>
+
+<!-- Ultimate Game Stash file-->
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+
+<html lang="en-us">
+  <head>
+    <base href="https://cdn.jsdelivr.net/gh/bubblfan/escape-road-3@main/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="game.css" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Escape Road 3</title>
+    <meta name="description" content="" />
+    <style type="text/css">
+      .jss1:before {
+        top: 0;
+        width: 100%;
+        filter: blur(16px);
+        height: 100%;
+        content: "";
+        display: block;
+        opacity: 0.5;
+        z-index: 0;
+        position: absolute;
+        background-size: cover;
+        background-image: url("loading.png");
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="unity-container" style="display: none">
+      <canvas id="unity-canvas"></canvas>
+    </div>
+    <div id="loadingBlock" style="">
+      <div
+        id="loading-text"
+        style="
+          color: white;
+          font-size: 48px;
+          font-family: cursive;
+          text-align: center;
+          margin-top: 20px;
+        "
+      >
+        LOADING...
+      </div>
+      <div class="jss31 jss34 jss1">
+        <div
+          style="
+            position: absolute;
+            font-family: Arial, Helvetica, sans-serif;
+            bottom: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #ffffff;
+            opacity: 0.5;
+          "
+        >
+          26041006
+        </div>
+        <div class="spinner"></div>
+        <div class="jss31 jss34 jss48" style="flex: 1 1 0%">
+          <div class="jss32">
+            <div class="jss7 jss9 jss20 jss3">
+              <div class="jss125">
+                <div class="jss123">
+                  <img src="logo.png" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--PRODUCT_VERSION:26041006END-->
+        <div class="jss31 jss34" style="flex: 3 1 0%">
+          <div class="jss32">
+            <div class="jss31 jss34 jss39 jss50 gameloader">
+              <div class="jss32">
+                <div class="gameloader-game-name">Escape Road 3</div>
+              </div>
+              <div class="jss32">
+                <div class="jss32 gameloader-logo">
+                  <img id="game-logo" src="loading.png" />
+                </div>
+              </div>
+              <div class="jss32">
+                <div>
+                  <div class="gameloader-progressbar">
+                    <div
+                      class="gameloader-progressbar-progress"
+                      id="progress_fill"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                  <div class="gameloader-progress-info">Game Loading...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var loadingText = document.querySelector("#loading-text");
+      let totalBytes = 0;
+      let loadedBytes = 0;
+
+      async function fetchWithProgress(url) {
+        const response = await fetch(url);
+        const reader = response.body.getReader();
+        let chunks = [];
+        let received = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          received += value.length;
+          loadedBytes += value.length;
+          chunks.push(value);
+          let mbDone = (loadedBytes / (1024 * 1024)).toFixed(2);
+          let mbTotal = "162.42";
+          loadingText.textContent = `LOADING... ${mbDone} MB / ${mbTotal} MB`;
+        }
+        let fullBuffer = new Uint8Array(received);
+        let offset = 0;
+        for (let chunk of chunks) {
+          fullBuffer.set(chunk, offset);
+          offset += chunk.length;
+        }
+        return fullBuffer.buffer;
+      }
+
+      async function mergeFiles(fileParts, cacheKey) {
+        const cache = await caches.open("gash-cache");
+        const cachedResponse = await cache.match(cacheKey);
+        if (cachedResponse) {
+          const blob = await cachedResponse.blob();
+          return URL.createObjectURL(blob);
+        }
+        const buffers = await Promise.all(
+          fileParts.map((part) => fetchWithProgress(part)),
+        );
+        const mergedBlob = new Blob(buffers);
+        const response = new Response(mergedBlob);
+        await cache.put(cacheKey, response);
+        return URL.createObjectURL(mergedBlob);
+      }
+
+      function getParts(file, start, end) {
+        let parts = [];
+        for (let i = start; i <= end; i++) {
+          parts.push(file + ".part" + i);
+        }
+        return parts;
+      }
+      (async () => {
+        const [dataUrl, wasmUrl] = await Promise.all([
+          mergeFiles(
+            getParts("Build/escape-road-3-v26041006.data", 1, 7),
+            "escape-road-3-v26041006.data",
+          ),
+          mergeFiles(
+            getParts("Build/escape-road-3-v26041006.wasm", 1, 3),
+            "escape-road-3-v26041006.wasm",
+          ),
+        ]);
+
+        var buildUrl = "Build";
+        var loaderUrl = buildUrl + "/escape-road-3-v26041006.loader.js";
+        var config = {
+          dataUrl: dataUrl,
+          frameworkUrl: buildUrl + "/escape-road-3-v26041006.framework.js",
+          codeUrl: wasmUrl,
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "ozgames.io",
+          productName: "Escape Road 3",
+          productVersion: "26041006",
+        };
+        config.gameId = "escape-road-3";
+        config.eventLog = true;
+        let currentDate = new Date();
+        let endLogDate = new Date("2026-04-28T09:43:42.671Z");
+        if (currentDate > endLogDate) {
+          config.eventLog = false;
+        }
+        function isDiffHost() {
+          return false;
+        }
+        window["GMSOFT_SDKTYPE"] = "gm";
+        localStorage.setItem(
+          "gmsdksigndomain",
+          "ewogICJzaWduZWQiOiAibStVenRwc20xL1dkU05STEFGS0x3YVl0dzg4b296QlA0QktaeHY5cnNadUluNWlMUWZxMUk3ZEcwbnlIN3hKamRBVTEvQUQ5dlFNUW1EeWNZUzRtb3F0VGlFd0N4WHoyTytzbllWMXhyTjBMM3Z4cnVKblJIM2dpMFJpQUVIaW8rU2pDNkEwSFBsN3lTT0V2TCsyY2g5OEdrN2NDRWV6eTEwcEtCTll2akRZNldVRHRZN3ZSdW43dnAvb2VKSXJjeEJNZjl4UWxONURVTkJEN0JvNzRTYlNmWEdYY3dWUi81TkJQQ2hzRnh0cFhOaHpIWURhUVRkYWtrQjdjVENSYVBGQ2VxREN3N1FDQkhoK0ZOZFNXdVEwbm5RMm1QRTJ4alVqOXV1Y0kxWGdQNGZpNmJMVTRRMFhiRkh1SzRsRENLVWF4ZlBmbmxFemZ0UXdOR0MrY09BPT0iLAogICJhcCI6ICJ5ZXMiLAogICJobiI6ICJvZnJlZS5pbyIsCiAgImRvbWFpbiI6ICJvZnJlZS5pbyIsCiAgInMiOiAieWVzIiwKICAic3R5cGUiOiAyCn0=",
+        );
+
+        var progressElement = document.getElementById("progress_fill");
+        var container = document.getElementById("unity-container");
+        var canvas = document.getElementById("unity-canvas");
+        var loadingBar = document.querySelector("#loadingBlock");
+        var progressBarFull = document.querySelector("#progress_fill");
+        var progress_text = document.querySelector(".gameloader-progress-info");
+        var loadingtext = document.querySelector("#loading-text");
+        let text_percent = "";
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            progressElement.style.width = 100 * progress + "%";
+            text_percent =
+              "Downloading file: " + Math.round(progress * 100) + "%";
+            progress_text.innerText = text_percent;
+            if (progress >= 99) {
+              progress_text.innerText = "Game Loading ...";
+            }
+          })
+            .then((unityInstance) => {
+              window.unityInstance = unityInstance;
+              setTimeout(function () {
+                loadingBar.style.display = "none";
+                loadingtext.remove();
+                window.focus();
+              }, 2000);
+              container.style.display = "block";
+            })
+            .catch((message) => {
+              alert(message);
+            });
+        };
+        document.body.appendChild(script);
+      })();
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics-compat.js"></script>
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyDUyjnqlS0gquhgZBuoXHs-kRSOMG-htU4",
+        authDomain: "ofree-32967.firebaseapp.com",
+        projectId: "ofree-32967",
+        storageBucket: "ofree-32967.firebasestorage.app",
+        messagingSenderId: "777959803199",
+        appId: "1:777959803199:web:cca8a2a59ce3b36749eb8a",
+        measurementId: "G-MEMBWQ3ZR8",
+      };
+      if (typeof firebaseConfig !== "undefined") {
+        if (firebaseConfig) {
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () {
+            window.dataLayer.push(arguments);
+          };
+
+          window.gtag("config", firebaseConfig.measurementId, {
+            cookie_domain: window.location.hostname,
+            cookie_flags: "SameSite=None;Secure",
+          });
+          // Initialize Firebase
+          const app = firebase.initializeApp(firebaseConfig);
+          //const auth = getAuth(app);
+        }
+      }
+    </script>
+    <script>
+      function firebaseSetUserProperties(props) {
+        if (typeof firebaseConfig === "undefined") return;
+        firebase.analytics().setUserProperties(props);
+      }
+      function firebaseLogEvent(event_name) {
+        if (typeof firebaseConfig === "undefined") return;
+        firebase.analytics().logEvent(event_name);
+      }
+      function firebaseLogEventParameter(event_name, event_param) {
+        if (typeof firebaseConfig === "undefined") return;
+        firebase.analytics().logEvent(event_name, event_param);
+      }
+    </script>
+  </body>
+</html>
+ 
