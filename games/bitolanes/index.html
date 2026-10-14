@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/js/all.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap" rel="stylesheet">
+    <title>Bit Planes</title>
+<link href="styles.css?5d2872322fef463c838c" rel="stylesheet"></head>
+<body>
+<main>
+    <section class="welcome">
+        <div class="ribbon right black">
+            <a href="https://discord.gg/XhzWf6Z48y" tabindex="-1" target="_blank">Join Discord server</a>
+        </div>
+        <h1>
+            <i class="logo"></i>
+            Bit Planes
+            <i class="logo"></i>
+        </h1>
+        <p>
+            <strong>Controls:</strong><br>
+        </p>
+        <ul>
+            <li>Arrows <kbd>↑</kbd><kbd>↓</kbd> — thrust level.</li>
+            <li>Arrows <kbd>←</kbd><kbd>→</kbd> — elevator controls.</li>
+            <li><kbd>Space</kbd> — fire a gun. <kbd>X</kbd> — deploy a missile.</li>
+            <li><kbd>C</kbd> — catapult / parachute and get new plane at the barn.</li>
+        </ul>
+
+        <form id="game">
+            <label>
+                <input type="text" name="nickname" placeholder="Nickname">
+            </label>
+            <div class="game-modes">
+                <div class="game-modes-column">
+                    <p>
+                        <strong>Game modes:</strong>
+                    </p>
+                    <div>
+                        <label title="Everyone against everyone."><input type="radio" name="mode" value="death-match"
+                                                                         checked autofocus> Death match</label>
+                    </div>
+                    <div>
+                        <label title="Fight between teams."><input type="radio" name="mode" value="teams"> Teams</label>
+                    </div>
+                    <div>
+                        <label title="One on one duel."><input type="radio" name="mode" value="duel"> Duel</label>
+                    </div>
+                    <div>
+                        <label title="Survive with a waives of enemies."><input type="radio" name="mode"
+                                                                                value="survival"> Survival</label>
+                    </div>
+                </div>
+                <div class="game-modes-column">
+                    <p>
+                        <strong>Fun modes:</strong>
+                    </p>
+                    <div>
+                        <label title="Two big teams against each other."><input type="radio" name="mode" value="swarm">
+                            Swarm</label>
+                    </div>
+                    <div>
+                        <label title="Total domination."><input type="radio" name="mode" value="domination"> Domination</label>
+                    </div>
+                    <div>
+                        <label title="Revenge of cows."><input type="radio" name="mode" value="revenge"> Revenge</label>
+                    </div>
+                </div>
+            </div>
+            <div class="action">
+                <button class="btn">‣ Start</button>
+            </div>
+        </form>
+
+        <div class="stats"></div>
+        <canvas class="demo"></canvas>
+    </section>
+</main>
+
+<div class="ui">
+    <div class="cockpit">
+        <div class="missile-capacity">
+            <div class="missile"></div>
+            <div class="missile"></div>
+        </div>
+        <div class="thrust">
+            <div class="thrust-level"></div>
+        </div>
+        <div class="ammo-capacity">
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+            <div class="ammo"></div>
+        </div>
+    </div>
+    <canvas class="minimap"></canvas>
+    <div class="log"></div>
+</div>
+<canvas id="canvas"></canvas>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+  (function (m, e, t, r, i, k, a) {
+    m[i] = m[i] || function () {
+      (m[i].a = m[i].a || []).push(arguments)
+    }
+    m[i].l = 1 * new Date()
+    for (var j = 0; j < document.scripts.length; j++) {
+      if (document.scripts[j].src === r) {
+        return
+      }
+    }
+    k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+  })
+  (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym')
+
+  ym(94977381, 'init', {
+    clickmap: true,
+    trackLinks: true,
+    accurateTrackBounce: true,
+  })
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/94977381" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+
+<script type="text/javascript" src="index.js?5d2872322fef463c838c"></script></body>
+</html>

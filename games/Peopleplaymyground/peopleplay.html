@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | People Playground</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+  </head>
+   <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #231F20;
+        }
+        #unity-container {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+  <body>
+    <div id="unity-container">
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+    </div>
+    <script>
+      window.addEventListener("load", function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("ServiceWorker.js");
+        }
+      });
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var warningBanner = document.querySelector("#unity-warning");
+      function doNothing() { }
+      canvas.requestFullscreen = doNothing;
+      canvas.webkitRequestFullscreen = doNothing;
+      canvas.mozRequestFullScreen = doNothing;
+      canvas.msRequestFullscreen = doNothing;
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/pggbog.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/pggbog.data",
+        frameworkUrl: buildUrl + "/pggbog.framework.js",
+        codeUrl: buildUrl + "/pggbog.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Studio Minus",
+        productName: "People Playground",
+        productVersion: "1",
+        showBanner: unityShowBanner,
+      };
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      }
+
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+      <div style="display:none;" aria-hidden="true">
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section>
+      <h1>Educational Resources and Online Learning Platform</h1>
+      <p>Comprehensive education platform for students, teachers, and lifelong learners. Access online courses, study materials, exam preparation resources, and interactive learning tools.</p>
+      <section>
+        <h2>Academic Subjects</h2>
+        <p>Mathematics, Science, English, History, Literature, Writing, Reading, Social Studies, Geography, Biology, Chemistry, Physics, Algebra, Geometry, Calculus, Statistics, Computer Science, Programming, Foreign Languages, Art, Music</p>
+      </section>
+      <section>
+        <h2>Educational Services</h2>
+        <p>Online courses, college credit, exam preparation, test prep, tutoring, homework help, study guides, practice tests, educational videos, interactive lessons, learning resources, curriculum development, academic support, student success, teacher resources, educational technology, e-learning, distance education, virtual classroom, online tutoring, academic coaching</p>
+      </section>
+      <section>
+        <h2>Student Levels</h2>
+        <p>K-12 education, elementary school, middle school, high school, college, university, graduate school, continuing education, adult learning, professional development, certification programs, degree programs, homeschool education</p>
+      </section>
+      <section>
+        <h2>Test Preparation</h2>
+        <p>SAT prep, ACT prep, GRE prep, GMAT prep, LSAT prep, MCAT prep, AP courses, Advanced Placement, standardized tests, college entrance exams, professional certification exams, state assessments, final exams, midterms</p>
+      </section>
+      <section>
+        <h3>Learning Methods</h3>
+        <p>Interactive learning, video lessons, practice quizzes, flashcards, study notes, educational games, adaptive learning, personalized education, self-paced learning, collaborative learning, project-based learning, STEM education, critical thinking, problem solving</p>
+      </section> </body>
+</html>

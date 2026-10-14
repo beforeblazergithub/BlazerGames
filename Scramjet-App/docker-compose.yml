@@ -1,0 +1,12 @@
+# TODO: needs to be updated for sj
+# services:
+#   ultraviolet:
+#     image: diffusehyperion/ultraviolet
+#     container_name: scramjet
+#     restart: unless-stopped
+#     ports:
+#       - "8080:8080"
+
+# networks:
+#   default:
+#     name: ultraviolet

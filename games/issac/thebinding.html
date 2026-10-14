@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Play The Binding of Isaac (Flash)</title>
+    <style>
+        body { background: #000; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        #player { width: 800px; height: 600px; }
+    </style>
+    <!-- Load the Ruffle script emulator -->
+    <script src="https://unpkg.com"></script>
+</head>
+<body>
+
+    <div id="player"></div>
+
+    <script>
+        window.RufflePlayer = window.RufflePlayer || {};
+        window.addEventListener("load", (event) => {
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("player");
+            container.appendChild(player);
+            // Replace "isaac.swf" with the actual path to your file
+            player.load("isaac.swf"); 
+        });
+    </script>
+</body>
+</html>

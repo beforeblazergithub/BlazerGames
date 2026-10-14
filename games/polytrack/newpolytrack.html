@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+
+
+<!-- Ultimate Game Stash file--> 
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+<!-- Credit airbender5026 and iceverychill -->
+
+
+<html>
+<head>
+    <base href="https://cdn.jsdelivr.net/gh/AZURE2077/polytrack-beta-0.6.0@main/">
+    <script>
+        var NativeImage = window.Image;
+        window.Image = function() {
+            var img = arguments.length ? new NativeImage(arguments[0], arguments[1]) : new NativeImage();
+            img.crossOrigin = "anonymous";
+            return img;
+        };
+        window.Image.prototype = NativeImage.prototype;
+        var _createElement = document.createElement.bind(document);
+        document.createElement = function(tag) {
+            var el = _createElement.apply(document, arguments);
+            if (typeof tag === "string" && tag.toLowerCase() === "img") {
+                el.crossOrigin = "anonymous";
+            }
+            return el;
+        };
+        var _audioContexts = [];
+        var _gestured = false;
+        function _resumeAll() {
+            _gestured = true;
+            _audioContexts.forEach(function(ctx) {
+                if (ctx.state === "suspended") ctx.resume();
+            });
+        }
+        document.addEventListener("click", _resumeAll, true);
+        document.addEventListener("keydown", _resumeAll, true);
+        document.addEventListener("touchstart", _resumeAll, true);
+        var NativeAC = window.AudioContext || window.webkitAudioContext;
+        if (NativeAC) {
+            var PatchedAC = function() {
+                var ctx = arguments.length ? new NativeAC(arguments[0]) : new NativeAC();
+                _audioContexts.push(ctx);
+                if (_gestured && ctx.state === "suspended") ctx.resume();
+                return ctx;
+            };
+            PatchedAC.prototype = NativeAC.prototype;
+            try { window.AudioContext = PatchedAC; } catch(e) {}
+            try { window.webkitAudioContext = PatchedAC; } catch(e) {}
+        }
+        var cdnBase = document.querySelector("base").href;
+        var PROXY = "vpskodub.tmena1565.workers.dev";
+        var workerPatchLines = [
+            'var __cdnBase = "' + cdnBase + '";',
+            'var __proxy = "' + PROXY + '";',
+            'function __resolveUrl(url) {',
+            '    if (typeof url !== "string") return url;',
+            '    if (url.indexOf("http") !== 0 && url.indexOf("blob:") !== 0 && url.indexOf("data:") !== 0 && url.indexOf("//") !== 0) {',
+            '        return __cdnBase + url.replace(/^\\//, "");',
+            '    }',
+            '    return url.replace("vps.kodub.com", __proxy);',
+            '}',
+            'var __origFetch = self.fetch.bind(self);',
+            'self.fetch = function(input, init) {',
+            '    if (typeof input === "string") input = __resolveUrl(input);',
+            '    else if (input instanceof Request) input = new Request(__resolveUrl(input.url), input);',
+            '    return __origFetch(input, init);',
+            '};',
+            'var __origXHROpen = XMLHttpRequest.prototype.open;',
+            'XMLHttpRequest.prototype.open = function(method, url) {',
+            '    var args = Array.prototype.slice.call(arguments);',
+            '    args[1] = __resolveUrl(url);',
+            '    return __origXHROpen.apply(this, args);',
+            '};'
+        ];
+        var workerPatch = workerPatchLines.join("\n") + "\n";
+        window.simulationWorkerReady = fetch(cdnBase + "simulation_worker.bundle.js")
+            .then(function(res) { return res.text(); })
+            .then(function(text) {
+                text = text.split("replacethisplease").join(cdnBase);
+                text = text.replace(
+                    /importScripts\(\s*["'](?!https?:\/\/|blob:|data:)([^"']+)["']\s*\)/g,
+                    function(match, path) { return 'importScripts("' + cdnBase + path + '")'; }
+                );
+                text = workerPatch + text;
+                return "data:application/javascript," + encodeURIComponent(text);
+            });
+        var ogWorker = window.Worker;
+        window.Worker = function(scriptUrl, options) {
+            if (typeof scriptUrl === "string" && scriptUrl.toLowerCase() === "simulation_worker.bundle.js") {
+                var realWorker = null;
+                var pendingPosts = [];
+                var listeners = {};
+                var wrapper = {
+                    postMessage: function() {
+                        var args = arguments;
+                        if (realWorker) realWorker.postMessage.apply(realWorker, args);
+                        else pendingPosts.push(args);
+                    },
+                    terminate: function() { if (realWorker) realWorker.terminate(); },
+                    addEventListener: function(type, fn, opts) {
+                        if (!listeners[type]) listeners[type] = [];
+                        listeners[type].push({ fn: fn, opts: opts });
+                        if (realWorker) realWorker.addEventListener(type, fn, opts);
+                    },
+                    removeEventListener: function(type, fn) {
+                        if (realWorker) realWorker.removeEventListener(type, fn);
+                    }
+                };
+                Object.defineProperty(wrapper, "onmessage", {
+                    get: function() { return this._onmessage; },
+                    set: function(fn) { this._onmessage = fn; if (realWorker) realWorker.onmessage = fn; }
+                });
+                Object.defineProperty(wrapper, "onerror", {
+                    get: function() { return this._onerror; },
+                    set: function(fn) { this._onerror = fn; if (realWorker) realWorker.onerror = fn; }
+                });
+                window.simulationWorkerReady.then(function(dataUri) {
+                    realWorker = new ogWorker(dataUri, options);
+                    realWorker.onmessage = function(e) { if (wrapper._onmessage) wrapper._onmessage(e); };
+                    realWorker.onerror   = function(e) { if (wrapper._onerror)   wrapper._onerror(e); };
+                    Object.keys(listeners).forEach(function(type) {
+                        listeners[type].forEach(function(item) {
+                            realWorker.addEventListener(type, item.fn, item.opts);
+                        });
+                    });
+                    pendingPosts.forEach(function(args) {
+                        realWorker.postMessage.apply(realWorker, args);
+                    });
+                });
+                return wrapper;
+            }
+            return new ogWorker(scriptUrl, options);
+        };
+        window.Worker.prototype = ogWorker.prototype;
+        var ogFetch = window.fetch;
+        window.fetch = function(input, init) {
+            if (typeof input === "string") {
+                input = input.replace("vps.kodub.com", PROXY);
+            } else if (input instanceof Request) {
+                input = new Request(input.url.replace("vps.kodub.com", PROXY), input);
+            }
+            return ogFetch(input, init);
+        };
+        var ogXHROpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url) {
+            var args = Array.prototype.slice.call(arguments);
+            if (typeof url === "string") args[1] = url.replace("vps.kodub.com", PROXY);
+            return ogXHROpen.apply(this, args);
+        };
+    </script>
+    <meta charset="utf-8">
+    <link rel="preload" href="forced_square.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="images/logo.svg" as="image" type="image/svg+xml" crossorigin="anonymous" />
+    <link rel="preload" href="images/discord.svg" as="image" type="image/svg+xml" crossorigin="anonymous" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+    <script defer="defer" src="error_screen.bundle.js"></script>
+    <script defer="defer" src="main.bundle.js"></script>
+</head>
+<body>
+    <canvas id="screen"></canvas>
+    <div id="ui"></div>
+    <div id="transition-layer"></div>
+</body>
+</html>

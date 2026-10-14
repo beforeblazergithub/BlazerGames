@@ -1,90 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blazer</title>
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="35938da3-048d-406d-9c96-dee04a070731"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LONE STAR</title>
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #0351f8, #000000);
+      color: white;
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    nav h1 {
+      font-size: 2rem;
+      color: #ffffff;
+      letter-spacing: 2px;
+    }
+
+    .featured {
+      padding: 40px 20px;
+    }
+
+    .featured h1 {
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+    }
+
+    .game-card img {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+    }
+
+    .play-button {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .game-card:hover .play-button {
+      opacity: 1;
+    }
+
+    .content {
+      padding: 30px 20px;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .search {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .search input {
+      width: 70%;
+      max-width: 500px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px 0 0 12px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .search button {
+      padding: 14px 20px;
+      border: none;
+      background: #ce3315;
+      color: rgb(31, 83, 255);
+      font-size: 1rem;
+      border-radius: 0 12px 12px 0;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search button:hover {
+      background: hsl(0, 83%, 53%);
+    }
+
+    #games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    #games a {
+      display: block;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #games a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 0, 0, 0.934);
+    }
+
+    #games img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      nav h1 {
+        font-size: 1.4rem;
+      }
+
+      .search input {
+        width: 60%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <img src="images/logo.png" alt="logo">
-        <h1>BLAZER</h1>
-    </nav>
 
-    <div class="featured">
-        <h1>Popular:</h1>
-        <div class="column">
-          <a href="games/bob-the-robber-2/">
-            <img src="images/bob-the-robber-2.png">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-            </div>
-          </a>
-          <a href="games/vex7/">
-            <img src="images/vex7.jpeg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-            </div>
-          </a>
-        </div>
-        <div class="row">
-          <a href="games/vex6">
-            <img src="images/vex6.jpeg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-            </div>
-          </a>
-        </div>
-        <div class="row">
-          <a href="games/drive-mad/">
-            <img src="images/drive-mad.jpg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-            </div>
-            </a>
-        </div>
-        <div class="column">
-          <a href="games/moto-x3m/">
-            <img src="images/moto-x3m.jpg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-            </div>
-          </a>
-          <a href="games/retro-bowl/">
-            <img src="images/retro-bowl.jpg">
-            <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-            </div>
-          </a>
-        </div>
-        </div>
+  <nav>
+    <img src="images/lsplogo1.png" alt="logo">
+    <h1>LONE STAR V2</h1>
+  </nav>
+
+  <section class="featured">
+ <p style="font-size: 210px; font-weight: bold; background-image: linear-gradient(to bottom right, #2d5eda, #1645a3); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+  Welcome to LONE STAR!
+</p>
     </div>
+  </section>
 
-    <div class="content">
-
+  <div class="content">
     <hr>
 
     <div class="search">
-        <input type="text" placeholder="Search..." oninput="">
-        <button><i class="fas fa-search"></i></button>
+      <input type="text" placeholder="Search games...">
+      <button><i class="fas fa-search"></i></button>
     </div>
 
     <div id="games">
-        <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" alt="bob the robber 2"></a>
-        <a href="games/vex7/"><img src="images/vex7.jpeg" alt="vex 7"></a>
-        <a href="games/vex6/"><img src="images/vex6.jpeg" alt="vex 6"></a>
-        <a href="games/"><img src="images/mc.png" alt="minecraft"></a>
-        <a href="games/moto-x3m/"><img src="images/moto-x3m.jpg" alt="moto x3m"></a>
-        <a href="games/retro-bowl/"><img src="images/retro-bowl.jpg" alt="retrobowl"></a>
-        <a href="games/drive-mad/"><img src="images/drive-mad.jpg" alt="drive mad"></a>
-        <a href="games/slope/"><img src="images/slope.jpg" alt="slope"></a>
-        <a href="games/motox3m2/"><img src="images/motox3m2.jpg" alt="moto x3m2"></a>
+      <a href="games/youtube/youtube.html"><img src="images/youtube.jpg" alt="YouTube"></a>
+      <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" alt="Bob The Robber 2"></a>
+      <a href="games/youtube/youtube.html"><img src="images/youtube.jpg" alt="YouTube"></a>
+      <a href="games/vex7/"><img src="images/vex7.jpeg" alt="Vex 7"></a>
+      <a href="games/1v1lol/"><img src="images/1v1.jpg" alt="1v1LoL"></a>
+      <a href="games/vex6/"><img src="images/vex6.jpeg" alt="Vex 6"></a>
+      <a href="games/mine1/minecraft-eagler.html"><img src="images/mc.png" alt="Minecraft"></a>
+      <a href="games/moto-x3m/"><img src="images/moto-x3m.jpg" alt="Moto X3M"></a>
+      <a href="games/retro-bowl/"><img src="images/retro-bowl.jpg" alt="Retro Bowl"></a>
+      <a href="games/drive-mad/"><img src="images/drive-mad.jpg" alt="Drive Mad"></a>
+      <a href="games/slope/"><img src="images/slope.jpg" alt="Slope"></a>
+      <a href="games/motox3m2/"><img src="images/motox3m2.jpg" alt="Moto X3M 2"></a>
+      <a href="games/amazingsp/"><img src="images/amazing strange rope police.jpg" alt="Amazing Ropes"></a>
+      <a href="games/EscapeRoad1/escaperoad1.html"><img src="images/Escaperoadpng.jpg" alt="Escape Road 1"></a>
+      <a href="games/Escaperoad2/index.html"><img src="images/escaperoad2.jpg" alt="Escape Road 2"></a>
+      <a href="games/EscapeRoad3/escaperoad3.html"><img src="images/escaperoad3.jpg" alt="Escape Road 3"></a>
+      <a href="games/ragdollarch/index.html"><img src="images/images (7).jpg" alt="Ragdoll Archer"></a>
+      <a href="games/Fivenightsatempstei/fivenightsatepstei.html"><img src="images/images (11).jpg" alt="Five Nights At Epsteins"></a>
+      <a href="games/ragdollhitttttt/ragdollhit.html"><img src="images/images (8).jpg" alt="Ragdoll Hit"></a>
+      <a href="games/Fridaynightfunkin/Fridaynfunkin.html"><img src="images/images (9).jpg" alt="Friday Night Funkin"></a>
+      <a href="games/FNFbside/FNFBSIDE.html"><img src="images/images (10).jpg" alt="FNFBSIDE-B"></a>
+      <a href="games/FNAF1/fnaf1111.html"><img src="images/images (12).jpg" alt="FNAF1"></a>
+      <a href="games/FNAF22/FNAF2.html"><img src="images/images (13).jpg" alt="FNAF2"></a>
+      <a href="games/GUHSPINHTML/gunspins.html"><img src="images/images (14).jpg" alt="Guhspin"></a>
+      <a href="games/Leveldevel/Leveldevilmyone.html"><img src="images/images (15).jpg" alt="Level Devil"></a>
+      <a href="games/BITMYLIFE/bitlifee.html"><img src="images/images (16).jpg" alt="Bit Life"></a>
+      <a href="games/bitolanes/"><img src="images/images (17).jpg" alt="Bitpanes"></a>
+      <a href="games/cookieclicker/COOKIE.html"><img src="images/images (18).jpg" alt="cookie clicker"></a>
+      <a href="games/polytrack/newpolytrack.html"><img src="images/images (19).jpg" alt="polytrack"></a>
+      <a href="games/Peopleplaymyground/peopleplay.html"><img src="images/images (20).jpg" alt="People Play My Ground"></a>
+      <a href="games/holeio/hole.html"><img src="images/download (2).jpg" alt="Hole.io"></a>
+      <a href="games/vsimposter/vsimpost.html"><img src="images/images (222).jpg" alt="Vs IMPOSTER"></a>
+      <a href="games/ultrakill/ultramykill.html"><img src="images/download.jpg" alt="ULTRAKILL"></a>
+      <a href="games/issac/thebinding.html"><img src="images/download (1).jpg" alt="The Binding of Isaac"></a>
+      <a href="games/arcticfull/index2.html"><img src="images/arctic.JPG" alt="Arctic Full"></a>
+
+      
+
+
+     <h6 style="text-align: center; margin-top: 5px; color: #ffffff; font-size: 14px;">&copy; 2026-9 LONE STAR. The games are the property of their respective owners.</h6>
+     <h6 style="text-align: center; margin-top: 10px; color: #ffffff; font-size: 14px;">LONE STAR is not affiliated with any of the games or their developers.</h6>
+     <h6 style="text-align: center; margin-top: 10px; color: #ffffff; font-size: 14px;">Want to add Games? </h6>
+     <button style="display: block; margin: 0 auto; padding: 10px 20px; background-color: #0077ff; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="window.location.href='https://forms.gle/M5tsRV2sPvfb7NDT7'">Add Games</button>
+
     </div>
-    </div>
+  </div>
+
+  <script src="script.js"></script>
+
 </body>
 </html>
-
-<script src="script.js"></script>
